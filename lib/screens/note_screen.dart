@@ -10,7 +10,6 @@ class NoteScreen extends StatefulWidget {
 
 class _NoteScreenState extends State<NoteScreen> {
   List<bool> _isSelected = [false, false, false];
-  List<int> _clickedCounter = [0, 0, 0];
   final _title = TextEditingController();
   final _description = TextEditingController();
   final _textInside = TextEditingController();
@@ -46,19 +45,24 @@ class _NoteScreenState extends State<NoteScreen> {
         actions: const [IconButton(onPressed: null, icon: Icon(Icons.check))],
       ),
       body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildTitleField(),
-              buildDescriptionTextField(),
-              const SizedBox(height: 8),
-              buildChoiceChip(),
-              const SizedBox(height: 8),
-              buildContextInside()
-            ],
-          ),
+        child: Stack(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  buildTitleField(),
+                  buildDescriptionTextField(),
+                  const SizedBox(height: 8),
+                  buildChoiceChip(),
+                  const SizedBox(height: 8),
+                  buildContextInside()
+                ],
+              ),
+            ),
+            buildCancelButton(context)
+          ],
         ),
       ),
     );
@@ -104,7 +108,8 @@ class _NoteScreenState extends State<NoteScreen> {
     return Expanded(
       child: TextField(
         controller: _textInside,
-        decoration: InputDecoration(hintText: 'Input your note here!'),
+        decoration: const InputDecoration(
+            hintText: 'Input your note here!', border: InputBorder.none),
         keyboardType: TextInputType.multiline,
         maxLines: 100,
       ),
@@ -120,6 +125,24 @@ class _NoteScreenState extends State<NoteScreen> {
         border: InputBorder.none,
       ),
       style: TodoTheme.lightTextTheme.headline2,
+    );
+  }
+
+  Widget buildCancelButton(BuildContext context) {
+    return Positioned(
+      bottom: 25.0,
+      right: 15.0,
+      child: InkWell(
+        onTap: () => Navigator.pop(context),
+        child: Container(
+          width: 60,
+          height: 60,
+          decoration: const BoxDecoration(
+              color: Color(0xffFE3577),
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: const Image(image: AssetImage('assets/delete_icon.png')),
+        ),
+      ),
     );
   }
 }
