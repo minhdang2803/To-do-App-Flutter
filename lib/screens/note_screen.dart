@@ -96,10 +96,11 @@ class _NoteScreenState extends State<NoteScreen> {
           selectedColor: TodoTheme.importantChipColor,
         ),
         ChoiceChip(
-            label: const Text('Very Important'),
-            selected: _isSelected[2],
-            onSelected: (value) => choiceOption(value, 2, 1, 0),
-            selectedColor: TodoTheme.veryImportantChipCplor)
+          label: const Text('Very Important'),
+          selected: _isSelected[2],
+          onSelected: (value) => choiceOption(value, 2, 1, 0),
+          selectedColor: TodoTheme.veryImportantChipCplor,
+        )
       ],
     );
   }
