@@ -25,11 +25,14 @@ class _NoteScreenState extends State<NoteScreen> {
   void choiceOption(bool value, int element1, int element2, int element3) {
     setState(() {
       _isSelected[element1] = value;
-      if (_clickedCounter[element1] == 0) {
-        _clickedCounter[element1]++;
-        if (element2 == 0 && element2 == 0) {
-          _isSelected[element2] = _isSelected[element3] = !value;
-        }
+      if (_isSelected[element2] == value && _isSelected[element3] == value) {
+        return;
+      }
+      if (_isSelected[element2] == value) {
+        _isSelected[element2] = !value;
+      }
+      if (_isSelected[element3] == value) {
+        _isSelected[element3] = !value;
       }
     });
     return;
