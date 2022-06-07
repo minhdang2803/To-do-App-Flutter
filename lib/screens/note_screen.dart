@@ -27,7 +27,9 @@ class _NoteScreenState extends State<NoteScreen> {
       _isSelected[element1] = value;
       if (_clickedCounter[element1] == 0) {
         _clickedCounter[element1]++;
-        _isSelected[element2] = _isSelected[element3] = !value;
+        if (element2 == 0 && element2 == 0) {
+          _isSelected[element2] = _isSelected[element3] = !value;
+        }
       }
     });
     return;
@@ -79,18 +81,18 @@ class _NoteScreenState extends State<NoteScreen> {
             label: const Text('Normal'),
             selected: _isSelected[0],
             onSelected: (value) => choiceOption(value, 0, 1, 2),
-            backgroundColor: TodoTheme.normalChipColor),
+            selectedColor: TodoTheme.normalChipColor),
         ChoiceChip(
           label: const Text('Important'),
           selected: _isSelected[1],
           onSelected: (value) => choiceOption(value, 1, 0, 2),
-          backgroundColor: TodoTheme.importantChipColor,
+          selectedColor: TodoTheme.importantChipColor,
         ),
         ChoiceChip(
             label: const Text('Very Important'),
             selected: _isSelected[2],
             onSelected: (value) => choiceOption(value, 2, 1, 0),
-            backgroundColor: TodoTheme.veryImportantChipCplor)
+            selectedColor: TodoTheme.veryImportantChipCplor)
       ],
     );
   }

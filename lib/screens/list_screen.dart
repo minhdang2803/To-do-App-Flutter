@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todoapp/components/task_card.dart';
+import 'package:todoapp/components/component.dart';
 import 'package:todoapp/theme.dart';
 import 'package:todoapp/screens/screens.dart';
 
