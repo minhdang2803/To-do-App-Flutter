@@ -21,7 +21,7 @@ class _ListScreenState extends State<ListScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 15),
               buildTopBar(context),
               const SizedBox(height: 20),
               buildListView()

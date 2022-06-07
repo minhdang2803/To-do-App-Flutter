@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TodoTheme {
+  static const Color normalChipColor = Color(0xffc0aee0);
+  static const Color importantChipColor = Color(0xffa28ad2);
+  static const Color veryImportantChipCplor = Color(0xff8565c4);
   static TextTheme lightTextTheme = TextTheme(
     bodyText1: GoogleFonts.nunitoSans(
       fontSize: 14.0,

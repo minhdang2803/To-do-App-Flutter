@@ -26,6 +26,11 @@ class TaskCard extends StatelessWidget {
                   'Hello User! Welcome to WHAT_TODO app, this is a default task that you can edit or delete to start using the app.',
               style: TodoTheme.lightTextTheme.bodySmall,
               maxLines: 3,
+            ),
+            const SizedBox(height: 8),
+            Chip(
+              label: const Text('Important'),
+              backgroundColor: TodoTheme.normalChipColor,
             )
           ],
         ),
