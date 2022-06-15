@@ -35,12 +35,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         backgroundColor: Colors.transparent,
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(child: buildPage()),
-            buildIndicator(),
-            buildActionButton(),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 30.0),
+          child: Column(
+            children: [
+              Expanded(child: buildPage()),
+              buildIndicator(),
+              buildActionButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -76,6 +79,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Widget buildPage() {
     return PageView(
+      physics: const ClampingScrollPhysics(),
       controller: controller,
       children: [
         buidOnboardingPageView(
@@ -99,12 +103,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image(
-            width: 300,
-            height: 300,
             image: imageProvider,
             fit: BoxFit.cover,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 30),
           Text(
             text,
             style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w400),

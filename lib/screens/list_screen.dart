@@ -25,7 +25,6 @@ class _ListScreenState extends State<ListScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 15),
               buildTopBar(context),
               const SizedBox(height: 20),
               buildListView(context)
@@ -38,18 +37,21 @@ class _ListScreenState extends State<ListScreen> {
   }
 
   Widget buildTopBar(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        const Image(image: AssetImage('assets/logo.png')),
-        Text('List your works!', style: TodoTheme.lightTextTheme.headline2),
-        IconButton(
-            onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const NoteScreen()),
-                ),
-            icon: const Icon(Icons.add))
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Image(image: AssetImage('assets/logo.png')),
+          Text('List your works!', style: TodoTheme.lightTextTheme.headline2),
+          IconButton(
+              onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const NoteScreen()),
+                  ),
+              icon: const Icon(Icons.add))
+        ],
+      ),
     );
   }
 
@@ -65,11 +67,16 @@ class _ListScreenState extends State<ListScreen> {
           }
           if (snapshot.hasError) {
             return Center(
-              child: Text(snapshot.error.toString()),
+              child: Text(
+                snapshot.error.toString(),
+                style: TodoTheme.lightTextTheme.headline4,
+              ),
             );
           }
           return snapshot.data!.isEmpty
-              ? const Center(child: Text('No Tasks in list'))
+              ? Center(
+                  child: Text('No Tasks in list',
+                      style: TodoTheme.lightTextTheme.headline2))
               : ListView.separated(
                   itemBuilder: (context, index) =>
                       TaskCard(task: snapshot.data![index]),
