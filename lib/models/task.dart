@@ -1,18 +1,39 @@
-import 'package:flutter/material.dart';
+enum ChipSelection { normal, important, urgent }
 
 class Task {
-  int? id;
-  String? chipLabel;
-  Color? backgroundColor;
-  String? title;
-  String? description;
-  String? contextInside;
-
+  final int? id;
+  final String chipLabel;
+  final int backgroundColor;
+  final String? title;
+  final String? description;
+  final String? contextInside;
   Task(
-      {this.backgroundColor,
-      this.chipLabel,
+      {required this.backgroundColor,
+      required this.chipLabel,
       this.title,
       this.contextInside,
       this.description,
       this.id});
+
+  factory Task.fromJSON(Map<String, dynamic> json) {
+    return Task(
+      id: json['id'],
+      chipLabel: json['chipLabel'],
+      backgroundColor: int.parse(json['backgroundColor']),
+      title: json['title'],
+      description: json['description'],
+      contextInside: json['contextInside'],
+    );
+  }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      'id': id,
+      'chipLabel': chipLabel,
+      'backgroundColor': backgroundColor,
+      'title': title,
+      'description': description,
+      'contextInside': contextInside,
+    };
+  }
 }

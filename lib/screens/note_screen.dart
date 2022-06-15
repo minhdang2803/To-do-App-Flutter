@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoapp/components/todo_path.dart';
+import 'package:todoapp/providers/list_manager.dart';
 import 'package:todoapp/theme.dart';
+import 'package:todoapp/models/models.dart';
 
 class NoteScreen extends StatefulWidget {
   const NoteScreen({Key? key}) : super(key: key);
+
+  static MaterialPage page() {
+    return MaterialPage(
+      child: const NoteScreen(),
+      name: TodoPages.item,
+      key: ValueKey(TodoPages.item),
+    );
+  }
 
   @override
   State<NoteScreen> createState() => _NoteScreenState();
 }
 
 class _NoteScreenState extends State<NoteScreen> {
-  List<bool> _isSelected = [false, false, false];
   final _title = TextEditingController();
   final _description = TextEditingController();
   final _textInside = TextEditingController();
+  ChipSelection _selection = ChipSelection.normal;
+  Color _color = TodoTheme.normalChipColor;
   @override
   void dispose() {
     super.dispose();
@@ -21,28 +34,33 @@ class _NoteScreenState extends State<NoteScreen> {
     _textInside.dispose();
   }
 
-  void choiceOption(bool value, int element1, int element2, int element3) {
-    setState(() {
-      _isSelected[element1] = value;
-      if (_isSelected[element2] == value && _isSelected[element3] == value) {
-        return;
-      }
-      if (_isSelected[element2] == value) {
-        _isSelected[element2] = !value;
-      }
-      if (_isSelected[element3] == value) {
-        _isSelected[element3] = !value;
-      }
-    });
-    return;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        actions: const [IconButton(onPressed: null, icon: Icon(Icons.check))],
+        backgroundColor: Colors.transparent,
+        actions: [
+          IconButton(
+              onPressed: () async {
+                //TODO: Validate Data before adding to the form
+                String getSelection = getPriority(_selection);
+                // String getColor = getColor(_color);
+                await Provider.of<ListManager>(context, listen: false).addTask(
+                  Task(
+                    title: _title.text,
+                    description: _description.text,
+                    contextInside: _textInside.text,
+                    chipLabel: getSelection,
+                    backgroundColor: _color.value,
+                  ),
+                );
+                // ignore: use_build_context_synchronously
+                Navigator.pop(context, true);
+              },
+              icon: const Icon(Icons.check)),
+          const SizedBox(width: 10),
+        ],
       ),
       body: SafeArea(
         child: Stack(
@@ -68,15 +86,27 @@ class _NoteScreenState extends State<NoteScreen> {
     );
   }
 
+  String getPriority(ChipSelection chip) {
+    if (chip == ChipSelection.normal) {
+      return 'Normal';
+    } else if (chip == ChipSelection.important) {
+      return 'Important';
+    } else {
+      return 'Urgent';
+    }
+  }
+
   TextField buildTitleField() {
     return TextField(
+      cursorColor: TodoTheme.veryImportantChipCplor,
       controller: _title,
       decoration: InputDecoration(
         hintText: 'Title',
         hintStyle: TodoTheme.lightTextTheme.headline1,
         border: InputBorder.none,
       ),
-      style: TodoTheme.lightTextTheme.headline1,
+      style: TodoTheme.lightTextTheme.headline1!
+          .copyWith(color: TodoTheme.veryImportantChipCplor),
     );
   }
 
@@ -86,19 +116,30 @@ class _NoteScreenState extends State<NoteScreen> {
       children: [
         ChoiceChip(
             label: const Text('Normal'),
-            selected: _isSelected[0],
-            onSelected: (value) => choiceOption(value, 0, 1, 2),
+            selected: _selection == ChipSelection.normal,
+            onSelected: (selected) {
+              setState(() {
+                _selection = ChipSelection.normal;
+                _color = TodoTheme.normalChipColor;
+              });
+            },
             selectedColor: TodoTheme.normalChipColor),
         ChoiceChip(
           label: const Text('Important'),
-          selected: _isSelected[1],
-          onSelected: (value) => choiceOption(value, 1, 0, 2),
+          selected: _selection == ChipSelection.important,
+          onSelected: (selected) => setState(() {
+            _selection = ChipSelection.important;
+            _color = TodoTheme.importantChipColor;
+          }),
           selectedColor: TodoTheme.importantChipColor,
         ),
         ChoiceChip(
-          label: const Text('Very Important'),
-          selected: _isSelected[2],
-          onSelected: (value) => choiceOption(value, 2, 1, 0),
+          label: const Text('Urgent'),
+          selected: _selection == ChipSelection.urgent,
+          onSelected: (selected) => setState(() {
+            _selection = ChipSelection.urgent;
+            _color = TodoTheme.veryImportantChipCplor;
+          }),
           selectedColor: TodoTheme.veryImportantChipCplor,
         )
       ],
@@ -108,6 +149,7 @@ class _NoteScreenState extends State<NoteScreen> {
   Widget buildContextInside() {
     return Expanded(
       child: TextField(
+        cursorColor: TodoTheme.veryImportantChipCplor,
         controller: _textInside,
         decoration: const InputDecoration(
             hintText: 'Input your note here!', border: InputBorder.none),
@@ -119,13 +161,15 @@ class _NoteScreenState extends State<NoteScreen> {
 
   Widget buildDescriptionTextField() {
     return TextField(
+      cursorColor: TodoTheme.veryImportantChipCplor,
       controller: _description,
       decoration: InputDecoration(
         hintText: 'Description',
         hintStyle: TodoTheme.lightTextTheme.headline2,
         border: InputBorder.none,
       ),
-      style: TodoTheme.lightTextTheme.headline2,
+      style: TodoTheme.lightTextTheme.headline2!
+          .copyWith(color: TodoTheme.veryImportantChipCplor),
     );
   }
 

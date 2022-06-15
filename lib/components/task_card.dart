@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/theme.dart';
+import 'package:todoapp/models/models.dart';
 
 class TaskCard extends StatelessWidget {
-  const TaskCard({Key? key, this.note, this.title}) : super(key: key);
-  final String? note;
-  final String? title;
+  const TaskCard({Key? key, required this.task}) : super(key: key);
+  final Task task;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -16,21 +16,21 @@ class TaskCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              title ?? 'Get Started',
+              task.title ?? 'No title',
               style: TodoTheme.lightTextTheme.headline2,
               maxLines: 1,
             ),
             const SizedBox(height: 8),
             Text(
-              title ??
+              task.description ??
                   'Hello User! Welcome to WHAT_TODO app, this is a default task that you can edit or delete to start using the app.',
               style: TodoTheme.lightTextTheme.bodySmall,
               maxLines: 3,
             ),
             const SizedBox(height: 8),
             Chip(
-              label: const Text('Important'),
-              backgroundColor: TodoTheme.normalChipColor,
+              label: Text(task.chipLabel),
+              backgroundColor: Color(task.backgroundColor),
             )
           ],
         ),
