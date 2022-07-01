@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/database_helper.dart';
 import 'package:todoapp/models/models.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:todoapp/theme.dart';
 
 class TaskManager extends ChangeNotifier {
@@ -45,9 +44,7 @@ class TaskManager extends ChangeNotifier {
   }
 
   void setSelection(ChipSelection selection) {
-    print('Selection Before: $_selection');
     _selection = selection;
-    print('Selection after: $_selection');
     notifyListeners();
   }
 

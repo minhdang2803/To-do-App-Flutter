@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
-import 'package:todoapp/providers/providers.dart';
 import 'package:todoapp/theme.dart';
 
 class SettingScreen extends StatelessWidget {

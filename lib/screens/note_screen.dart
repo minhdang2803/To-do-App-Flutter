@@ -42,15 +42,13 @@ class _NoteScreenState extends State<NoteScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                //TODO: Validate Data before adding to the form
                 ChipSelection selection =
                     Provider.of<TaskManager>(context, listen: false)
                         .getSelection;
                 String getSelection = getPriority(selection);
-                int Color = Provider.of<TaskManager>(context, listen: false)
+                int color = Provider.of<TaskManager>(context, listen: false)
                     .getColor
                     .value;
-                print('Selection get when add: $getSelection');
                 // String getColor = getColor(_color);
                 Provider.of<TaskManager>(context, listen: false).addTask(
                   Task(
@@ -58,7 +56,7 @@ class _NoteScreenState extends State<NoteScreen> {
                     description: _description.text,
                     contextInside: _textInside.text,
                     chipLabel: getSelection,
-                    backgroundColor: Color,
+                    backgroundColor: color,
                   ),
                 );
                 // ignore: use_build_context_synchronously

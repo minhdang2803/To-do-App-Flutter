@@ -200,7 +200,7 @@ class _EditingScreenState extends State<EditingScreen> {
 
   Widget buildContentField(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       child: TextField(
         controller: _contentTextField,
         decoration: const InputDecoration(border: InputBorder.none),
