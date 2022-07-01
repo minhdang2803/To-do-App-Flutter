@@ -19,7 +19,7 @@ class Task {
     return Task(
       id: json['id'],
       chipLabel: json['chipLabel'],
-      backgroundColor: int.parse(json['backgroundColor']),
+      backgroundColor: json['backgroundColor'],
       title: json['title'],
       description: json['description'],
       contextInside: json['contextInside'],

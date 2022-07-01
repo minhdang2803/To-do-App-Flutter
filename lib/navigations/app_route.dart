@@ -3,24 +3,26 @@ import 'package:todoapp/components/todo_path.dart';
 import 'package:todoapp/providers/providers.dart';
 import 'package:todoapp/screens/screens.dart';
 
+import '../models/models.dart';
+
 class AppRouter extends RouterDelegate
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
   @override
   GlobalKey<NavigatorState> navigatorKey;
   final AppStateManager appStateManager;
-  final ListManager listManager;
+  final TaskManager taskManager;
 
-  AppRouter({required this.appStateManager, required this.listManager})
+  AppRouter({required this.appStateManager, required this.taskManager})
       : navigatorKey = GlobalKey<NavigatorState>() {
     appStateManager.addListener(notifyListeners);
-    listManager.addListener(notifyListeners);
+    taskManager.addListener(notifyListeners);
   }
 
   @override
   void dispose() {
     super.dispose();
     appStateManager.removeListener(notifyListeners);
-    listManager.removeListener(notifyListeners);
+    taskManager.removeListener(notifyListeners);
   }
 
   @override
@@ -37,8 +39,17 @@ class AppRouter extends RouterDelegate
           OnboardingScreen.page(),
         //TODO: Goto HomePage
         if (appStateManager.isOnboardingScreen) Homepage.page(),
-        // //TODO: Goto NoteScreen
-        // if (appStateManager.isOnNoteScreen) NoteScreen.page()
+        //TODO: Goto NoteScreen
+        if (appStateManager.isOnNoteScreen) NoteScreen.page(),
+        //TODO: Goto EditingScreen
+        if (appStateManager.isOnEditngScreen)
+          EditingScreen.page(Task(
+            chipLabel: taskManager.getPriority(taskManager.getSelection),
+            backgroundColor: taskManager.getColor.value,
+            title: taskManager.getTitle,
+            description: taskManager.getDescription,
+            contextInside: taskManager.getContentInside,
+          ))
       ],
     );
   }
@@ -50,9 +61,12 @@ class AppRouter extends RouterDelegate
     if (route.settings.name == TodoPages.onboardingPath) {
       appStateManager.logout();
     }
-    // if (route.settings.name == TodoPages.item) {
-    //   appStateManager.gotoNoteScreen(false);
-    // }
+    if (route.settings.name == TodoPages.item) {
+      appStateManager.gotoNoteScreen(false);
+    }
+    if (route.settings.name == TodoPages.editing) {
+      appStateManager.gotoEditingScreen(false);
+    }
     return true;
   }
 

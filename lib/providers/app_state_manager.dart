@@ -5,11 +5,13 @@ class AppStateManager extends ChangeNotifier {
   bool _splashScreen = false;
   bool _onBoardingScreen = false;
   bool _noteScreen = false;
+  bool _editingScreen = false;
   int _selectedTab = 0;
 
   bool get isSplashScreen => _splashScreen;
   bool get isOnboardingScreen => _onBoardingScreen;
   bool get isOnNoteScreen => _noteScreen;
+  bool get isOnEditngScreen => _editingScreen;
   int get currentIndex => _selectedTab;
 
   void initializeApp() {
@@ -32,6 +34,11 @@ class AppStateManager extends ChangeNotifier {
 
   void gotoNoteScreen(bool selected) {
     _noteScreen = selected;
+    notifyListeners();
+  }
+
+  void gotoEditingScreen(bool selected) {
+    _editingScreen = selected;
     notifyListeners();
   }
 

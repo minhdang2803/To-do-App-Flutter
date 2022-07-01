@@ -1,7 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class TodoTheme {
+class TodoThemeManager extends ChangeNotifier {
+  late ThemeData _selectedTheme;
+  late bool _isDark;
+  Future<void> swapTheme(bool value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (value == true) {
+      _isDark = true;
+      _selectedTheme = dark();
+      prefs.setBool('isDarkTheme', true);
+    } else {
+      _isDark = false;
+      _selectedTheme = light();
+      prefs.setBool('isDarkTheme', false);
+    }
+    notifyListeners();
+  }
+
+  TodoThemeManager({required bool isDarkMode}) {
+    if (isDarkMode) {
+      _isDark = true;
+      _selectedTheme = dark();
+    } else {
+      _isDark = false;
+      _selectedTheme = light();
+    }
+  }
+
+  bool get getDarkMode => _isDark;
+  ThemeData get getTheme => _selectedTheme;
   static const Color normalChipColor = Color(0xffc0aee0);
   static const Color importantChipColor = Color(0xffa28ad2);
   static const Color veryImportantChipCplor = Color(0xff8565c4);
@@ -27,7 +56,7 @@ class TodoTheme {
       color: Colors.black,
     ),
     headline6: GoogleFonts.nunitoSans(
-      fontSize: 20.0,
+      fontSize: 10.0,
       fontWeight: FontWeight.w600,
       color: Colors.black,
     ),

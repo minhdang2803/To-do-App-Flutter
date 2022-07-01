@@ -24,7 +24,6 @@ class DatabaseHelper {
   }
 
   Future _onCreate(Database db, int version) async {
-    await db.execute('DROP DATABASE $_databaseName ;');
     await db.execute('''
         CREATE TABLE $_taskTable (
           id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -48,11 +47,6 @@ class DatabaseHelper {
       task.toJSON(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-  }
-
-  Future<int> deleteAllTask() async {
-    final db = await instance.database;
-    return await db.delete(_taskTable);
   }
 
   Future<List<Task>> getTask() async {

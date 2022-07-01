@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/components/component.dart';
-import 'package:todoapp/database.dart';
-import 'package:todoapp/providers/list_manager.dart';
-import 'package:todoapp/theme.dart';
-import 'package:todoapp/screens/screens.dart';
+import 'package:todoapp/providers/app_state_manager.dart';
+import 'package:todoapp/providers/task_manager.dart';
 import '../models/models.dart';
 
 class ListScreen extends StatefulWidget {
@@ -43,12 +41,14 @@ class _ListScreenState extends State<ListScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Image(image: AssetImage('assets/logo.png')),
-          Text('List your works!', style: TodoTheme.lightTextTheme.headline2),
+          Text('List your works!',
+              style: Theme.of(context).textTheme.headline2),
           IconButton(
-              onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const NoteScreen()),
-                  ),
+              onPressed: () {
+                Provider.of<TaskManager>(context, listen: false).setDefault();
+                Provider.of<AppStateManager>(context, listen: false)
+                    .gotoNoteScreen(true);
+              },
               icon: const Icon(Icons.add))
         ],
       ),
@@ -56,34 +56,61 @@ class _ListScreenState extends State<ListScreen> {
   }
 
   Widget buildListView(BuildContext context) {
-    return Expanded(
-      child: FutureBuilder<List<Task>>(
-        future: Provider.of<ListManager>(context, listen: false).getTask(),
-        builder: (context, AsyncSnapshot<List<Task>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                snapshot.error.toString(),
-                style: TodoTheme.lightTextTheme.headline4,
-              ),
-            );
-          }
-          return snapshot.data!.isEmpty
-              ? Center(
-                  child: Text('No Tasks in list',
-                      style: TodoTheme.lightTextTheme.headline2))
-              : ListView.separated(
-                  itemBuilder: (context, index) =>
-                      TaskCard(task: snapshot.data![index]),
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 8),
-                  itemCount: snapshot.data!.length);
-        },
+    return Consumer<TaskManager>(
+      builder: (context, taskManager, child) {
+        return Expanded(
+          child: FutureBuilder<List<Task>>(
+            future: taskManager.getTaskList(),
+            builder: (context, AsyncSnapshot<List<Task>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(snapshot.error.toString(),
+                      style: Theme.of(context).textTheme.headline4),
+                );
+              }
+              return snapshot.data!.isEmpty
+                  ? Center(
+                      child: Text('No Tasks in list',
+                          style: Theme.of(context).textTheme.headline2))
+                  : ListView.separated(
+                      itemBuilder: (context, index) {
+                        Task task = snapshot.data![index];
+                        return Dismissible(
+                          key: UniqueKey(),
+                          direction: DismissDirection.endToStart,
+                          onDismissed: (direction) =>
+                              taskManager.deleteCurrentTask(task),
+                          child: buildCustomTaskCard(context, task),
+                        );
+                      },
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 8),
+                      itemCount: snapshot.data!.length,
+                    );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  ClipRRect buildCustomTaskCard(BuildContext context, Task task) {
+    return ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(20)),
+      child: Material(
+        child: InkWell(
+          onTap: () {
+            Provider.of<TaskManager>(context, listen: false).setTask(task);
+            Provider.of<AppStateManager>(context, listen: false)
+                .gotoEditingScreen(true);
+          },
+          child: TaskCard(task: task),
+        ),
       ),
     );
   }
@@ -93,13 +120,14 @@ class _ListScreenState extends State<ListScreen> {
       bottom: 10.0,
       right: 0,
       child: InkWell(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const NoteScreen()),
-        ).then((value) => setState(() {})),
+        onTap: () {
+          Provider.of<TaskManager>(context, listen: false).setDefault();
+          Provider.of<AppStateManager>(context, listen: false)
+              .gotoNoteScreen(true);
+        },
         onLongPress: () async {
-          await DatabaseHelper.instance.deleteAllTask();
-          setState(() {});
+          await Provider.of<TaskManager>(context, listen: false)
+              .deleteAllTask();
         },
         child: Container(
           width: 60,
@@ -113,21 +141,3 @@ class _ListScreenState extends State<ListScreen> {
     );
   }
 }
-
-
-
-// Widget buildListView(BuildContext context) {
-//   return Expanded(
-//       child: ListView(
-//     children: [
-//       TaskCard(
-//         task: Task(
-//             backgroundColor: TodoTheme.veryImportantChipCplor,
-//             chipLabel: ChipSelection.urgent),
-//       )
-//     ],
-//   ));
-// }
-
-
-

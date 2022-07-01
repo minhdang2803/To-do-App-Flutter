@@ -3,4 +3,5 @@ class TodoPages {
   static String splashPath = '/splash';
   static String onboardingPath = '/onboarding';
   static String item = '/item';
+  static String editing = '/edit';
 }

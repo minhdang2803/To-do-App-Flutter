@@ -54,7 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       controller: controller,
       count: 3,
       effect: const WormEffect(
-        activeDotColor: TodoTheme.normalChipColor,
+        activeDotColor: TodoThemeManager.normalChipColor,
       ),
     );
   }
@@ -109,7 +109,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           const SizedBox(height: 30),
           Text(
             text,
-            style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
+            style: Theme.of(context).textTheme.headline3,
           )
         ],
       ),
