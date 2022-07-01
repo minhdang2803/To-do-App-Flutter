@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todoapp/navigations/app_route.dart';
 import 'package:todoapp/providers/providers.dart';
 import 'package:todoapp/theme.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyTodo());
+  final prefs = await SharedPreferences.getInstance();
+  final todoThemeProvider =
+      TodoThemeManager(isDarkMode: prefs.getBool('isDarkTheme') ?? false);
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => todoThemeProvider,
+      child: const MyTodo(),
+    ),
+  );
 }
 
 class MyTodo extends StatefulWidget {
@@ -41,10 +50,10 @@ class _MyTodoState extends State<MyTodo> {
         ChangeNotifierProvider(create: (context) => _listManager),
         ChangeNotifierProvider(create: (context) => _appStateManager),
       ],
-      child: Consumer<TaskManager>(
+      child: Consumer<TodoThemeManager>(
         builder: ((context, value, child) => MaterialApp(
               debugShowCheckedModeBanner: false,
-              theme: theme,
+              theme: value.getTheme,
               title: 'To Do App',
               home: Router(
                 routerDelegate: _appRouter,

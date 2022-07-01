@@ -38,7 +38,8 @@ class AppRouter extends RouterDelegate
             appStateManager.isOnboardingScreen == false)
           OnboardingScreen.page(),
         //TODO: Goto HomePage
-        if (appStateManager.isOnboardingScreen) Homepage.page(),
+        if (appStateManager.isOnboardingScreen)
+          Homepage.page(appStateManager.currentIndex),
         //TODO: Goto NoteScreen
         if (appStateManager.isOnNoteScreen) NoteScreen.page(),
         //TODO: Goto EditingScreen

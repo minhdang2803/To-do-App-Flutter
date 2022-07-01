@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
             const Image(image: AssetImage('assets/logo.png')),
             Text(
               'What To Doooo!',
-              style: TodoThemeManager.lightTextTheme.headline1,
+              style: Theme.of(context).textTheme.headline1,
             )
           ],
         )),

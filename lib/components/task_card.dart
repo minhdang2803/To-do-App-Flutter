@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todoapp/theme.dart';
 import 'package:todoapp/models/models.dart';
 
 class TaskCard extends StatelessWidget {
@@ -10,7 +9,15 @@ class TaskCard extends StatelessWidget {
     return Ink(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).primaryColor.withOpacity(0.5),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: const Offset(0, 3), // changes position of shadow
+            ),
+          ],
+          color: Theme.of(context).primaryColor,
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(12)),
       child: Column(

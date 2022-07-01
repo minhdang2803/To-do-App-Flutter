@@ -92,25 +92,25 @@ class TodoThemeManager extends ChangeNotifier {
 
   static ThemeData light() {
     return ThemeData(
-      brightness: Brightness.light,
-      checkboxTheme: CheckboxThemeData(
-        fillColor: MaterialStateColor.resolveWith((states) {
-          return Colors.black;
-        }),
-      ),
-      appBarTheme: const AppBarTheme(
-        foregroundColor: Color(0xff86829D),
-        backgroundColor: Colors.white,
-      ),
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        foregroundColor: Colors.white,
-        backgroundColor: Color(0xff86829D),
-      ),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        selectedItemColor: Color(0xff86829D),
-      ),
-      textTheme: lightTextTheme,
-    );
+        brightness: Brightness.light,
+        checkboxTheme: CheckboxThemeData(
+          fillColor: MaterialStateColor.resolveWith((states) {
+            return Colors.black;
+          }),
+        ),
+        appBarTheme: const AppBarTheme(
+          foregroundColor: Color(0xff86829D),
+          backgroundColor: Colors.white,
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          foregroundColor: Colors.white,
+          backgroundColor: Color(0xff86829D),
+        ),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          selectedItemColor: Color(0xff86829D),
+        ),
+        textTheme: lightTextTheme,
+        primaryColor: Colors.white);
   }
 
   static ThemeData dark() {
@@ -128,6 +128,7 @@ class TodoThemeManager extends ChangeNotifier {
         selectedItemColor: Color.fromARGB(255, 72, 66, 112),
       ),
       textTheme: darkTextTheme,
+      primaryColor: Colors.black54,
     );
   }
 }
